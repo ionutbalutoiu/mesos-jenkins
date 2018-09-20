@@ -143,11 +143,9 @@ function Start-MesosBuild {
     $logsUrl = Get-BuildLogsUrl
     try {
         $generatorName = "Visual Studio 15 2017 Win64"
-        $parameters = @("$MESOS_GIT_REPO_DIR", "-G", "`"$generatorName`"", "-T", "host=x64", "-DHAS_AUTHENTICATION=ON", "-DENABLE_JAVA=ON")
+        $parameters = @("$MESOS_GIT_REPO_DIR", "-G", "`"$generatorName`"", "-T", "host=x64", "-DHAS_AUTHENTICATION=0", "-DENABLE_JAVA=ON", "-DENABLE_LIBEVENT=ON")
         if($EnableSSL) {
-            $parameters += @("-DENABLE_LIBEVENT=ON", "-DENABLE_SSL=ON")
-        } else {
-            $parameters += "-DENABLE_LIBWINIO=ON"
+            $parameters += @("-DENABLE_SSL=ON")
         }
         Start-MesosCIProcess -ProcessPath "cmake.exe" -LogFileName "mesos-cmake.log" `
                              -ArgumentList $parameters -BuildErrorMessage "Mesos failed to build."
